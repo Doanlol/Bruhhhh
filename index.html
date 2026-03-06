@@ -2,53 +2,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bốc Thăm May Mắn</title>
+<title>Lucky Draw</title>
 
 <style>
+
 body{
-    font-family: Arial;
-    text-align:center;
-    background:#f0f0f0;
+font-family:Arial;
+text-align:center;
+background:#f0f0f0;
 }
 
 .container{
-    background:white;
-    width:400px;
-    margin:auto;
-    margin-top:50px;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+background:white;
+width:450px;
+margin:auto;
+margin-top:40px;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
 button{
-    padding:10px 20px;
-    margin:5px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
+padding:10px 15px;
+margin:5px;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
 
-#spin{
-    background:green;
-    color:white;
-}
-
-#add{
-    background:blue;
-    color:white;
-}
-
-#clear{
-    background:red;
-    color:white;
+input{
+padding:8px;
 }
 
 #result{
-    font-size:25px;
-    margin-top:20px;
-    color:green;
+margin-top:20px;
+font-size:20px;
+color:green;
 }
+
 </style>
 </head>
 
@@ -56,20 +47,23 @@ button{
 
 <div class="container">
 
-<h2>🎲 Bốc Thăm May Mắn</h2>
+<h2>🎲 Lucky Draw</h2>
 
 <input id="nameInput" placeholder="Nhập tên">
 
-<br><br>
-
-<button id="add" onclick="addName()">Thêm</button>
-<button id="clear" onclick="clearList()">Xóa hết</button>
+<button onclick="addName()">Thêm</button>
+<button onclick="clearList()">Xóa</button>
 
 <h3>Danh sách</h3>
-
 <ul id="list"></ul>
 
-<button id="spin" onclick="spin()">Quay!</button>
+<hr>
+
+<h3>Chế độ bốc thăm</h3>
+
+<button onclick="drawOne()">🎯 1 người</button>
+<button onclick="drawMultiple()">🎉 Nhiều người</button>
+<button onclick="makeTeams()">👥 Chia team</button>
 
 <div id="result"></div>
 
@@ -81,57 +75,121 @@ let names = []
 
 function addName(){
 
-    let input = document.getElementById("nameInput")
-    let name = input.value
+let name = document.getElementById("nameInput").value
 
-    if(name === "") return
+if(name==="") return
 
-    names.push(name)
+names.push(name)
 
-    updateList()
+updateList()
 
-    input.value = ""
+document.getElementById("nameInput").value=""
+
 }
 
 function updateList(){
 
-    let list = document.getElementById("list")
+let list = document.getElementById("list")
 
-    list.innerHTML = ""
+list.innerHTML=""
 
-    for(let i=0;i<names.length;i++){
+for(let i=0;i<names.length;i++){
 
-        list.innerHTML += "<li>"+names[i]+"</li>"
-
-    }
+list.innerHTML += "<li>"+names[i]+"</li>"
 
 }
 
-function spin(){
-
-    if(names.length === 0){
-        alert("Chưa có tên!")
-        return
-    }
-
-    let random = Math.floor(Math.random()*names.length)
-
-    let winner = names[random]
-
-    document.getElementById("result").innerText =
-    "🎉 Người trúng: " + winner
 }
 
 function clearList(){
 
-    names = []
+names=[]
 
-    updateList()
+updateList()
 
-    document.getElementById("result").innerText=""
+document.getElementById("result").innerHTML=""
+
+}
+
+function drawOne(){
+
+if(names.length==0){
+
+alert("Chưa có tên!")
+
+return
+
+}
+
+let random = Math.floor(Math.random()*names.length)
+
+document.getElementById("result").innerHTML =
+"🎯 Người trúng: <b>"+names[random]+"</b>"
+
+}
+
+function drawMultiple(){
+
+if(names.length<2){
+
+alert("Cần ít nhất 2 người")
+
+return
+
+}
+
+let winners = []
+
+let temp = [...names]
+
+for(let i=0;i<3 && temp.length>0;i++){
+
+let r = Math.floor(Math.random()*temp.length)
+
+winners.push(temp[r])
+
+temp.splice(r,1)
+
+}
+
+document.getElementById("result").innerHTML =
+"🎉 Người trúng: "+ winners.join(", ")
+
+}
+
+function makeTeams(){
+
+if(names.length<2){
+
+alert("Cần ít nhất 2 người")
+
+return
+
+}
+
+let shuffled = [...names]
+
+shuffled.sort(()=>Math.random()-0.5)
+
+let team1=[]
+let team2=[]
+
+for(let i=0;i<shuffled.length;i++){
+
+if(i%2==0){
+team1.push(shuffled[i])
+}else{
+team2.push(shuffled[i])
+}
+
+}
+
+document.getElementById("result").innerHTML =
+"👥 Team A: "+team1.join(", ")+"<br><br>👥 Team B: "+team2.join(", ")
+
 }
 
 </script>
 
 </body>
-  </html>
+</html>
