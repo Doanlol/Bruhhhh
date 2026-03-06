@@ -34,6 +34,12 @@ input{
 padding:8px;
 }
 
+textarea{
+width:90%;
+height:80px;
+padding:8px;
+}
+
 #result{
 margin-top:20px;
 font-size:20px;
@@ -56,6 +62,14 @@ color:green;
 
 <h3>Danh sách</h3>
 <ul id="list"></ul>
+
+<hr>
+
+<h3>Thêm nhiều người</h3>
+
+<textarea id="bulkInput" placeholder="Mỗi người một dòng"></textarea>
+<br>
+<button onclick="addBulk()">Thêm danh sách</button>
 
 <hr>
 
@@ -84,6 +98,28 @@ names.push(name)
 updateList()
 
 document.getElementById("nameInput").value=""
+
+}
+
+function addBulk(){
+
+let text = document.getElementById("bulkInput").value
+
+let arr = text.split("\n")
+
+for(let i=0;i<arr.length;i++){
+
+let name = arr[i].trim()
+
+if(name!=""){
+names.push(name)
+}
+
+}
+
+updateList()
+
+document.getElementById("bulkInput").value=""
 
 }
 
